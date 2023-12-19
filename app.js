@@ -1,5 +1,5 @@
 const yargs = require("yargs");
-const { simpanContact } = require("./contacts");
+const contact = require("./contacts");
 
 //Mengambil argument dari command line
 
@@ -24,10 +24,52 @@ yargs.command({
         }
     },
     handler(argv){
-        simpanContact(argv.nama, argv.email, argv.noHP);
+        contact.simpanContact(argv.nama, argv.email, argv.noHP);
     },
 
 }).demandCommand();
+
+//menampilkan semua data
+yargs.command({
+    command: 'list',
+    describe: 'Menambahkan semua data kontak',
+    handler(){
+        contact.listContact();
+    },
+});
+
+// menampilkan detail kontak
+yargs.command({
+    command: 'detail',
+    describe: 'Menampilkan detail sebuah contact berdasarkan nama',
+    builder: {
+        nama: {
+            describe: 'Nama lengkap',
+            demandOption: true,
+            type: 'string'
+        },
+    },
+    handler(argv){
+        contact.detailContact(argv.nama);
+    },
+});
+
+// menghapus kontak berdasarkan nama
+yargs.command({
+    command: 'delete',
+    describe: 'Menghapus sebuah contact berdasarkan nama',
+    builder: {
+        nama: {
+            describe: 'Nama lengkap',
+            demandOption: true,
+            type: 'string'
+        },
+    },
+    handler(argv){
+        contact.deleteContact(argv.nama);
+    },
+});
+
 
 yargs.parse();
 // yargs.command(
@@ -37,10 +79,6 @@ yargs.parse();
 //     (argv) => {
 //         console.log(argv.nama);
 //     });
-
-
-
-
 
 // const contacts = require('./contacts.js');
 
